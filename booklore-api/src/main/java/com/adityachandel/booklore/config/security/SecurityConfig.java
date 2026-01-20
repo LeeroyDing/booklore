@@ -35,6 +35,7 @@ public class SecurityConfig {
 
     private final OpdsUserDetailsService opdsUserDetailsService;
     private final DualJwtAuthenticationFilter dualJwtAuthenticationFilter;
+    private final APIKeyAuthenticationFilter apiKeyAuthenticationFilter;
     private final AppProperties appProperties;
 
     private static final String[] SWAGGER_ENDPOINTS = {
@@ -197,6 +198,7 @@ public class SecurityConfig {
                         .requestMatchers(publicEndpoints.toArray(new String[0])).permitAll()
                         .anyRequest().authenticated()
                 )
+                .addFilterBefore(apiKeyAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(dualJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
